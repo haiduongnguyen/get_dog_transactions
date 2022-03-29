@@ -55,12 +55,13 @@ def check_real_time_trans(trans_mode):
             
         # get data of next page
         checked_id = int(list_operation[-1].get("id"))
+        logger.info(f"Checkpoint: {checked_id}")
         sleep(600)
 
 
 if __name__ == '__main__':
     
-    logger.logger.add(f"log_real_time/log.log", rotation="50 MB")
+    logger.add(f"log_real_time/log.log", rotation="50 MB")
     
     logger.info("Start get real time transaction Program")
     

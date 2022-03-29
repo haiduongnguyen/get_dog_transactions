@@ -190,27 +190,6 @@ if __name__ == '__main__':
     # last_trans_time = datetime.strptime(list_operation[-1].get("timestamp"), "%Y-%m-%dT%H:%M:%SZ")
 
 
-    # yearly_expense = Transaction.objects.sum('price')
-    # print(yearly_expense)
+    total_vol = Transaction.objects.sum('price')
+    print(total_vol)
     
-
-
-    # def hello():
-    #     logger.add("file_test.log")
-    #     logger.info("testing   afssa")
-    
-    # hello()
-    
-    # from loguru import logger
-    # logger.add(f"log/test.log", rotation="50 MB")
-    # with open('log/test2.log', 'w') as f:
-    #     f.close()
-    
-    # print(str(datetime.now()))
-    
-    
-    def print_ab(a=1, b=2):
-        print(a)
-        print(b)
-        
-    print_ab(b=3, a=0)
