@@ -67,7 +67,7 @@ def check_transaction_by_operation(operation_hash, trans_mode='sales'):
                 try: 
                     result['price'] = int(int(step.get("diffs")[0].get("content").get("value").get("amount"))/1000000)
                 except:
-                    with open('log/fail_to_get_dog_price.txt', 'a') as f:
+                    with open('log_history/fail_to_get_dog_price.txt', 'a') as f:
                         logger.error("A dog trans but cannot get price")
                         f.write('\n')
                         f.write(json.dumps({"trans_id": result['trans_id'], "time": str(datetime.now())}) )
@@ -176,8 +176,8 @@ def check_accept_offer(distance):
            
 if __name__ == '__main__':
     # sales 
-    logger.add(f"log/log_sales.log", rotation="50 MB")
-    with open(f"log/log_sales.log", 'w') as f:
+    logger.add(f"log_history/log_sales.log", rotation="50 MB")
+    with open(f"log_history/log_sales.log", 'w') as f:
         f.close()
     
     logger.info("Start Sales Program")
@@ -192,8 +192,8 @@ if __name__ == '__main__':
 
 
     # accept offer
-    logger.add(f"log/log_accept_offer.log", rotation="50 MB")
-    with open(f"log/log_accept_offer.log", 'w') as f:
+    logger.add(f"log_history/log_accept_offer.log", rotation="50 MB")
+    with open(f"log_history/log_accept_offer.log", 'w') as f:
         f.close()
     
     logger.info("Start Accept Offer Program")

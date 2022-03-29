@@ -1,4 +1,6 @@
+from msilib.schema import Error
 from tabnanny import check
+from tkinter import E
 import requests
 import json
 import traceback
@@ -11,14 +13,15 @@ from mongoengine import connect
 from multiprocessing.dummy import Pool as ThreadPool
 
 from classes import Transaction, MAP
-from config import *
 
+from config import TZ_MARKET_WALLET
 
 from get_dog_trans import get_all_operation_trans, check_transaction_by_operation, save_trans
 
 
 connect('dogami-database', host='127.0.0.1', port=27017)
 
+last_id_txt = 'log_real_time/last_id.txt'
 
 def check_real_time_trans(trans_mode):
     
@@ -27,7 +30,14 @@ def check_real_time_trans(trans_mode):
     last_id = 5000000000
     count = 0
     err = 0   
-    checked_id = LAST_CHECKED_TRANS
+    try: 
+        with open(last_id_txt, 'r') as f:
+            checked_id = int(f.read())
+        if not checked_id:
+            assert Error
+    except:
+        last_trans_obj = Transaction.objects().order_by("-trans_id").limit(-1).first()
+        checked_id = int(last_trans_obj.trans_id)
     
     while checked_id < last_id:
         payload = {'type': 'transaction', 
@@ -56,7 +66,9 @@ def check_real_time_trans(trans_mode):
         # get data of next page
         checked_id = int(list_operation[-1].get("id"))
         logger.info(f"Checkpoint: {checked_id}")
-        sleep(600)
+        with open(last_id_txt, 'w') as f:
+            f.write(str(checked_id))
+        sleep(300)
 
 
 if __name__ == '__main__':
