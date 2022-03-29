@@ -3,3 +3,4 @@ venv/
 *.log
 www.py
 backup/
+log_*/
