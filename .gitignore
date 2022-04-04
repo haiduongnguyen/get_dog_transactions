@@ -4,3 +4,5 @@ venv/
 www.py
 backup/
 log_*/
+tools/database
+tools/database/
