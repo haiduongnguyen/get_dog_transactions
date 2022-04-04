@@ -15,6 +15,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 from config import *
 
 connect('dogami-database', host='127.0.0.1', port=27017)
+# connect('dogami-database', host='127.0.0.1', username="abc", password="abc", port=27017)
 
 
 def get_all_operation_trans(payload):

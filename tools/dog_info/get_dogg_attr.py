@@ -15,6 +15,7 @@ API_URL = 'https://data.objkt.com/v2/graphql'
 
 
 connect('dogami-database', host='127.0.0.1', port=27017)
+# connect('dogami-database', host='127.0.0.1', username="abc", password="abc", port=27017)
 
 
 

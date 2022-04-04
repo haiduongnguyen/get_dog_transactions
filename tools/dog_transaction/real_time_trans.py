@@ -1,15 +1,10 @@
-from msilib.schema import Error
-from tabnanny import check
-from tkinter import E
-import requests
-import json
-import traceback
+
 from datetime import datetime, timedelta
 from time import sleep
 
 from loguru import logger
 import mongoengine
-from mongoengine import connect
+from mongoengine import connect, disconnect
 from multiprocessing.dummy import Pool as ThreadPool
 
 from classes import Transaction, MAP
@@ -18,10 +13,11 @@ from config import TZ_MARKET_WALLET
 
 from get_dog_trans import get_all_operation_trans, check_transaction_by_operation, save_trans
 
+disconnect()
+connect('dogami-database', host='localhost', username="abc", password="abc", port=27017)
 
-connect('dogami-database', host='127.0.0.1', port=27017)
-
-last_id_txt = 'log_real_time/last_id.txt'
+last_id_txt = './dog_transaction/log_real_time/last_id.txt'
+log_file = "./dog_transaction/log_real_time/log.log"
 
 def check_real_time_trans(trans_mode):
     
@@ -34,7 +30,7 @@ def check_real_time_trans(trans_mode):
         with open(last_id_txt, 'r') as f:
             checked_id = int(f.read())
         if not checked_id:
-            assert Error
+            assert False
     except:
         last_trans_obj = Transaction.objects().order_by("-trans_id").limit(-1).first()
         checked_id = int(last_trans_obj.trans_id)
@@ -73,7 +69,7 @@ def check_real_time_trans(trans_mode):
 
 if __name__ == '__main__':
     
-    logger.add(f"log_real_time/log.log", rotation="50 MB")
+    logger.add(log_file, rotation="50 MB")
     
     logger.info("Start get real time transaction Program")
     
