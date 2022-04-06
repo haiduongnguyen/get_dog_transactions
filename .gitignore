@@ -1,0 +1,11 @@
+__pycache__/
+venv/
+*.log
+www.py
+backup/
+log_*/
+tools/database
+tools/database/
+*.pem
+*.zip
+
