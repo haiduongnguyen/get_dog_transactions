@@ -12,9 +12,11 @@ from classes import Transaction, MAP
 from config import TZ_MARKET_WALLET
 
 from get_dog_trans import get_all_operation_trans, check_transaction_by_operation, save_trans
+import os
+
 
 disconnect()
-connect('dogami-database', host='localhost', username="abc", password="abc", port=27017)
+connect('dogami-database', host=os.getenv('MONGO_HOST', "localhost"), username="abc", password="abc", port=27017)
 
 last_id_txt = './dog_transaction/log_real_time/last_id.txt'
 log_file = "./dog_transaction/log_real_time/log.log"

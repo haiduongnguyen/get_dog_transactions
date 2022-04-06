@@ -2,24 +2,35 @@ version: '3.8'
 services:
     mongo:
         image: mongo:latest
+        container_name: dogami-mongo
         environment:
             - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
             - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
             - MONGO_INITDB_DATABASE=root-db
         volumes:
-            - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
             - ./database:/data/db
         ports:
             - 27017:27017
         restart: always
-    
 
+        networks:
+            - dogami
+    
     my_app: 
         build: .
+        container_name: dogami-tool
         ports: 
           - 8000:5000
+        environment:
+          - MONGO_HOST=dogami-mongo
         volumes:
-          - ./dog_info:/app/dog_info
-          - ./dog_transaction:/app/dog_transaction 
+          - ./dog_transaction/log_real_time:/app/dog_transaction/log_real_time
+          - ./dog_transaction/log_history:/app/dog_transaction/log_history
+        networks:
+            - dogami
 
 
+networks:
+  dogami:
+    # Use a custom driver
+    driver: bridge

@@ -6,3 +6,5 @@ backup/
 log_*/
 tools/database
 tools/database/
+*.pem
+*.zip

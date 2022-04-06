@@ -10,4 +10,4 @@ RUN pip3 install -r requirements.txt
 COPY . .
 EXPOSE 5000
 
-CMD [ "python3", "dog_transaction/real_time_trans.py"]
+CMD [ "python3", "./dog_transaction/real_time_trans.py"]
