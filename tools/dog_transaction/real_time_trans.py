@@ -6,6 +6,7 @@ from loguru import logger
 import mongoengine
 from mongoengine import connect, disconnect
 from multiprocessing.dummy import Pool as ThreadPool
+import traceback
 
 from classes import Transaction, MAP
 
@@ -60,13 +61,22 @@ def check_real_time_trans(trans_mode):
                 print(f"Finish check {count} transactions")
                 print("number err:", err)
                 sleep(30)
-            
-        # get data of next page
-        checked_id = int(list_operation[-1].get("id"))
-        logger.info(f"Checkpoint: {checked_id}")
-        with open(last_id_txt, 'w') as f:
-            f.write(str(checked_id))
-        sleep(300)
+        
+        try: 
+            # get data of next page
+            checked_id = int(list_operation[-1].get("id"))
+            logger.info(f"Checkpoint: {checked_id}")
+            with open(last_id_txt, 'w') as f:
+                f.write(str(checked_id))
+            sleep(300)
+        except IndexError :
+            logger.info("No more trans created")
+            logger.info("Wait 1 hour to market")
+            sleep(3000)
+        except Exception as e:
+            logger.error(e)
+            logger.info(traceback.format_exc())
+            assert False
 
 
 if __name__ == '__main__':
