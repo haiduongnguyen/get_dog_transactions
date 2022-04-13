@@ -14,8 +14,8 @@ from multiprocessing.dummy import Pool as ThreadPool
 API_URL = 'https://data.objkt.com/v2/graphql'
 
 
-connect('dogami-database', host='127.0.0.1', port=27017)
-# connect('dogami-database', host='127.0.0.1', username="abc", password="abc", port=27017)
+# connect('dogami-database', host='127.0.0.1', port=27017)
+connect('dogami-database', host='127.0.0.1', username="abc", password="abc", port=27017)
 
 
 
@@ -90,8 +90,7 @@ def get_dog(token_id):
     
     try:             
         variables = {"tokenId": str(token_id), "fa2": "KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd"}
-        
-        
+               
         response_context = get_data(query=QUERY, variables=variables)
         save_data(response_context=response_context, variables=variables)
     except :
@@ -101,6 +100,10 @@ def get_dog(token_id):
 
 
 if __name__ == '__main__':
+    
+    # drop old records
+    x = Dog.delete_many({})
+    print(x.deleted_count, " documents deleted.")
     
     tokens_list = list(np.arange(0,8000))
     

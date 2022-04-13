@@ -3,9 +3,14 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from time import gmtime, strftime, localtime
+from datetime import datetime
 
+# hard code
+DIR_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+MONGO_DB_PATH = DIR_PATH + '/tools/database'
+S3_BUCKET_DES = 'dogami-database'
 
-LOG_DIR = './log_move_file'
+LOG_DIR = DIR_PATH + '/log_move_file'
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 CUR_TIME = strftime("%Y_%m_%d_%H_%M_%S", localtime())
@@ -14,12 +19,6 @@ logging.basicConfig(filename=f'{LOG_DIR}/{CUR_TIME}',
                     format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                     datefmt='%H:%M:%S',
                     level=logging.INFO)
-
-# hard code
-DIR_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-MONGO_DB_PATH = DIR_PATH + '/tools/database'
-S3_BUCKET_DES = 'dogami-database'
-
 
 def upload_file_to_s3(s3_client, file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
@@ -48,9 +47,9 @@ def upload_directory(path, bucketname):
     s3_client = boto3.client('s3')
     for root, dirs, files in os.walk(path):
         for file in files:
-            object_name = 'database/' + file
-            upload_file_to_s3(s3_client, os.path.join(
-                root, file), bucketname, object_name)
+            today_date = datetime.today().strftime('%Y-%m-%d')
+            object_name = today_date + '/' + 'database/' + file
+            upload_file_to_s3(s3_client, os.path.join(root, file), bucketname, object_name)
 
 
 if __name__ == '__main__':
