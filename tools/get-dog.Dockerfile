@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.9.5-windowsservercore-1809
+FROM python:3.9.5-slim
+
 
 WORKDIR /app
 
