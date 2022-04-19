@@ -2,7 +2,7 @@ import pandas as pd
 from pymongo import MongoClient
 # import plotly
 from datetime import datetime, date
-from time import gmtime, strftime, localtime
+from time import gmtime, strftime, localtime, sleep
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -10,6 +10,7 @@ from smtplib import SMTP
 import smtplib, ssl
 import sys, os
 import logging, traceback
+import schedule
 
 from lib_functions import connect_mongo, read_mongo
 
@@ -26,7 +27,9 @@ logging.basicConfig(filename=f'{LOG_DIR}/{CUR_TIME}',
                     level=logging.INFO)
 
 
-def main():
+def main():  
+    logging.info("Start program")
+    logging.info("Start read data and send email")
     try: 
         dog_df = read_mongo(db='dogami-database', collection='dog', host=os.getenv('MONGO_HOST', "localhost"), username="abc", password="abc") 
         trans_df = read_mongo(db='dogami-database', collection='transaction', host=os.getenv('MONGO_HOST', "localhost"), username="abc", password="abc")
@@ -90,10 +93,12 @@ def main():
         logging.error(e)
         logging.error(traceback.format_exc())
         return 
-        
+    logging.info("Finish program")
+    
+    
 if __name__ == '__main__':
     
-    logging.info("Start program")
-    logging.info("Start read data and send email")
-    main()
-    logging.info("Finish program")
+    schedule.every().day.at("10:30").do(main)
+    while True:
+        schedule.run_pending()
+        sleep(1)
