@@ -10,7 +10,7 @@ DIR_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 MONGO_DB_PATH = DIR_PATH + '/tools/database'
 S3_BUCKET_DES = 'dogami-database'
 
-LOG_DIR = DIR_PATH + '/log_move_file'
+LOG_DIR = os.path.dirname(os.path.realpath(__file__)) + '/log_move_file'
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 CUR_TIME = strftime("%Y_%m_%d_%H_%M_%S", localtime())

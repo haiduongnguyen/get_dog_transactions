@@ -17,7 +17,9 @@ services:
             - dogami
     
     my_app: 
-        build: .
+        build: 
+          context: .
+          dockerfile: get-dog.Dockerfile
         container_name: dogami-tool
         ports: 
           - 8000:5000
@@ -26,6 +28,20 @@ services:
         volumes:
           - ./dog_transaction/log_real_time:/app/dog_transaction/log_real_time
           - ./dog_transaction/log_history:/app/dog_transaction/log_history
+        networks:
+            - dogami
+
+    send-data-email: 
+        build: 
+          context: .
+          dockerfile: send-data-email.Dockerfile
+        container_name: dogami-send-data-email
+        ports: 
+          - 9000:6000
+        environment:
+          - MONGO_HOST=dogami-mongo
+        volumes:
+          - ./process_data/logs:/app/process_data/logs
         networks:
             - dogami
 
