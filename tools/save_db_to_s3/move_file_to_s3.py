@@ -7,7 +7,7 @@ from datetime import datetime
 
 # hard code
 DIR_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-MONGO_DB_PATH = DIR_PATH + '/tools/database'
+MONGO_DB_PATH = DIR_PATH + '/database'
 S3_BUCKET_DES = 'dogami-database'
 
 LOG_DIR = os.path.dirname(os.path.realpath(__file__)) + '/log_move_file'
